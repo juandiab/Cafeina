@@ -1,0 +1,302 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9EFE33188C7A4D1CA1978B70 /* CafeinaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B6C2DB67634F27AE91E326 /* CafeinaApp.swift */; };
+		29FD4E6BF0AF455295242D4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19ABB71E5B43038321130E /* AppDelegate.swift */; };
+		218F2F0824ED4048941529FD /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D758098724F23895130C5 /* MenuBarController.swift */; };
+		D116985384254235A8170FC6 /* PowerAssertionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FADF8F937464A6E99829225 /* PowerAssertionManager.swift */; };
+		F9B6E57A691E45CFAF23C7E4 /* LoginItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F8B3D157B94F20AF38E520 /* LoginItemManager.swift */; };
+		D754476FF66444B0A256F07F /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8FD2182F04140DAAC0985EB /* IOKit.framework */; };
+		8F38E48A3DD140938CB1E0C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BFF27A9F1A754DEA86C3BD81 /* Cafeina.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cafeina.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0B6C2DB67634F27AE91E326 /* CafeinaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeinaApp.swift; sourceTree = "<group>"; };
+		6C19ABB71E5B43038321130E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		145D758098724F23895130C5 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
+		0FADF8F937464A6E99829225 /* PowerAssertionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerAssertionManager.swift; sourceTree = "<group>"; };
+		70F8B3D157B94F20AF38E520 /* LoginItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemManager.swift; sourceTree = "<group>"; };
+		43A64ACCD0ED47BD8470826A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D8FD2182F04140DAAC0985EB /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		32338A5A94024A04BEC9261C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D754476FF66444B0A256F07F /* IOKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A4B29AC78EA2475A8715A495 /* Cafeina */ = {
+			isa = PBXGroup;
+			children = (
+				AA7FBBE6728241269557B577 /* Cafeina */,
+				AE8F0FA4BA4A4ED88020E93C /* Frameworks */,
+				54F5E0607B354FD9A03D2981 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AA7FBBE6728241269557B577 /* Cafeina */ = {
+			isa = PBXGroup;
+			children = (
+				A0B6C2DB67634F27AE91E326 /* CafeinaApp.swift */,
+				6C19ABB71E5B43038321130E /* AppDelegate.swift */,
+				145D758098724F23895130C5 /* MenuBarController.swift */,
+				0FADF8F937464A6E99829225 /* PowerAssertionManager.swift */,
+				70F8B3D157B94F20AF38E520 /* LoginItemManager.swift */,
+				43A64ACCD0ED47BD8470826A /* Info.plist */,
+				9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */,
+			);
+			path = Cafeina;
+			sourceTree = "<group>";
+		};
+		AE8F0FA4BA4A4ED88020E93C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D8FD2182F04140DAAC0985EB /* IOKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		54F5E0607B354FD9A03D2981 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BFF27A9F1A754DEA86C3BD81 /* Cafeina.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		070AC7E09A654A46BCF85A39 /* Cafeina */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDA69C60401045CB8D6EF744 /* Build configuration list for PBXNativeTarget "Cafeina" */;
+			buildPhases = (
+				801DA2777B104566B927EEE1 /* Sources */,
+				32338A5A94024A04BEC9261C /* Frameworks */,
+				00EDA0FA563E45B3BC5AF0FC /* Resources */,
+				F8B742A3D2B34AB6B92E6CB1 /* Clear Extended Attributes */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Cafeina;
+			productName = Cafeina;
+			productReference = BFF27A9F1A754DEA86C3BD81 /* Cafeina.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0267EB23850747BE9642AA08 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					070AC7E09A654A46BCF85A39 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+				};
+			};
+			buildConfigurationList = 794BF399466D4FFA90FF1840 /* Build configuration list for PBXProject "Cafeina" */;
+			compatibilityVersion = "Xcode 16.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A4B29AC78EA2475A8715A495 /* Cafeina */;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 54F5E0607B354FD9A03D2981 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				070AC7E09A654A46BCF85A39 /* Cafeina */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00EDA0FA563E45B3BC5AF0FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F38E48A3DD140938CB1E0C7 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F8B742A3D2B34AB6B92E6CB1 /* Clear Extended Attributes */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Clear Extended Attributes";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -n \"$TARGET_BUILD_DIR\" ] && [ -n \"$WRAPPER_NAME\" ]; then\n  /usr/bin/xattr -cr \"$TARGET_BUILD_DIR/$WRAPPER_NAME\" || true\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		801DA2777B104566B927EEE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9EFE33188C7A4D1CA1978B70 /* CafeinaApp.swift in Sources */,
+				29FD4E6BF0AF455295242D4A /* AppDelegate.swift in Sources */,
+				218F2F0824ED4048941529FD /* MenuBarController.swift in Sources */,
+				D116985384254235A8170FC6 /* PowerAssertionManager.swift in Sources */,
+				F9B6E57A691E45CFAF23C7E4 /* LoginItemManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		640D4788A85046D0A08991F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EDA69C60401045CB8D6EF745 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		794BF399466D4FFA90FF1841 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_PREVIEWS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Cafeina/Info.plist;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.juampa.Cafeina;
+				PRODUCT_BUNDLE_PACKAGE_TYPE = APPL;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		794BF399466D4FFA90FF1842 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_PREVIEWS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Cafeina/Info.plist;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.juampa.Cafeina;
+				PRODUCT_BUNDLE_PACKAGE_TYPE = APPL;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		794BF399466D4FFA90FF1840 /* Build configuration list for PBXProject "Cafeina" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				640D4788A85046D0A08991F2 /* Debug */,
+				EDA69C60401045CB8D6EF745 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDA69C60401045CB8D6EF744 /* Build configuration list for PBXNativeTarget "Cafeina" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				794BF399466D4FFA90FF1841 /* Debug */,
+				794BF399466D4FFA90FF1842 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0267EB23850747BE9642AA08 /* Project object */;
+}
