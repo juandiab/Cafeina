@@ -8,7 +8,8 @@ DerivedData/
 xcuserdata/
 
 # Distribution artifacts
-dist/
+dist/*
+!dist/Cafeina.dmg
 
 # SwiftPM/Xcode package caches
 .build/

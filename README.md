@@ -2,6 +2,12 @@
 
 Cafeina is a native macOS menu bar app that keeps your Mac awake while enabled.
 
+## Download
+
+Download the latest DMG from this repository:
+
+[Download Cafeina.dmg](https://github.com/juandiab/Cafeina/raw/master/dist/Cafeina.dmg)
+
 ## Build
 
 Open `Cafeina.xcodeproj` in Xcode, or build from the command line:
