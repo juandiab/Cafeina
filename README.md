@@ -2,7 +2,7 @@
 
 Cafeina is a native macOS menu bar app that keeps your Mac awake while enabled.
 
-**Version 1.1** · **Requires macOS 13.0 or later**
+**Version 1.2** · **Requires macOS 13.0 or later**
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

@@ -2,7 +2,7 @@
 
 All notable changes to Cafeina are documented in this file.
 
-## Unreleased
+## 1.2.0 — 2026-08-17
 
 ### Added
 - Template menu-bar icon that adapts to light/dark menu bars and tinting, with distinct on (filled cup) and off (outlined cup) states
