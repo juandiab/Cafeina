@@ -34,6 +34,7 @@ enum KeepAwakeDuration: Equatable {
     }
 }
 
+@MainActor
 final class PowerAssertionManager {
     private let reason = "Cafeina is keeping the Mac awake" as CFString
     private var idleSleepAssertionID: IOPMAssertionID = 0
@@ -68,7 +69,10 @@ final class PowerAssertionManager {
             let expiration = Date().addingTimeInterval(TimeInterval(minutes * 60))
             expiresAt = expiration
             let timer = Timer(fire: expiration, interval: 0, repeats: false) { [weak self] _ in
-                self?.disable()
+                // The timer is scheduled on the main run loop, so it always fires on the main thread.
+                MainActor.assumeIsolated {
+                    self?.disable()
+                }
             }
             RunLoop.main.add(timer, forMode: .common)
             expirationTimer = timer
@@ -130,7 +134,15 @@ final class PowerAssertionManager {
     }
 
     deinit {
-        expirationTimer?.invalidate()
-        releaseAssertions()
+        // deinit is nonisolated, so it may only read Sendable stored properties directly
+        // (it cannot call the main-actor-isolated helpers above or touch the Timer).
+        // A pending expiration timer only holds `self` weakly, so it fires as a no-op.
+        if idleSleepAssertionID != 0 {
+            IOPMAssertionRelease(idleSleepAssertionID)
+        }
+
+        if displaySleepAssertionID != 0 {
+            IOPMAssertionRelease(displaySleepAssertionID)
+        }
     }
 }

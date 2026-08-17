@@ -2,6 +2,14 @@
 
 All notable changes to Cafeina are documented in this file.
 
+## Unreleased
+
+### Changed
+- `scripts/build-dmg.sh` builds with `-destination 'generic/platform=macOS'` so the DMG always contains a universal (`arm64` + `x86_64`) app; the committed `dist/Cafeina.dmg` is rebuilt from 1.1
+- The script no longer replaces Xcode's signature with an ad-hoc one; it keeps the automatic-signing (Apple Development) signature by default and supports optional Developer ID re-signing (`CODESIGN_IDENTITY`) and notarization + stapling (`NOTARY_PROFILE`), printing a summary (size, archs, identity, `spctl` result)
+- Added App Sandbox entitlement (`Cafeina/Cafeina.entitlements`, `com.apple.security.app-sandbox`) wired into Debug and Release for App Store submission
+- Fixed the Swift 6 concurrency warning in `PowerAssertionManager` by isolating it to the main actor (expiration timer now hops via `MainActor.assumeIsolated`); `AppDelegate` is explicitly `@MainActor`
+
 ## 1.1.0 — 2026-08-17
 
 ### Added

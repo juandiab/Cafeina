@@ -35,13 +35,31 @@ xcodebuild -project Cafeina.xcodeproj -scheme Cafeina -configuration Release bui
 
 ## Create the DMG
 
-The packaging script builds a Release app, ad-hoc signs it for local testing, stages `Cafeina.app`, and creates `dist/Cafeina.dmg`.
+The packaging script builds a universal (`arm64` + `x86_64`) Release app, stages `Cafeina.app`, and creates `dist/Cafeina.dmg`. It prints a summary (size, architectures, signing identity, Gatekeeper assessment) when done.
 
 ```bash
 chmod +x scripts/build-dmg.sh
 ./scripts/build-dmg.sh
 ```
 
-The DMG is intended for local distribution/testing and does not include App Store packaging or notarization support yet.
+By default the app keeps the signature produced by Xcode's automatic signing (Apple Development). That is fine for local testing, but the DMG will **not** pass Gatekeeper on other Macs until it is signed with a Developer ID certificate and notarized. Two optional environment variables enable that:
+
+| Variable | Effect |
+| --- | --- |
+| `CODESIGN_IDENTITY` | Re-signs the app with the given identity (hardened runtime, secure timestamp, `Cafeina/Cafeina.entitlements`). Use your `Developer ID Application: Name (TEAMID)` identity. |
+| `NOTARY_PROFILE` | Name of a `xcrun notarytool store-credentials` keychain profile. When set, the DMG is submitted for notarization (`--wait`) and stapled. Requires `CODESIGN_IDENTITY`. |
+
+```bash
+# One-time: store App Store Connect credentials in the keychain
+xcrun notarytool store-credentials cafeina-notary \
+  --apple-id you@example.com --team-id TEAMID --password <app-specific-password>
+
+# Signed + notarized DMG
+CODESIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" \
+NOTARY_PROFILE=cafeina-notary \
+./scripts/build-dmg.sh
+```
+
+The app is sandboxed (`com.apple.security.app-sandbox`) via `Cafeina/Cafeina.entitlements`, which is also what the App Store submission needs.
 
 Cafeina is an independent app and is not affiliated with Caffeine or any similarly named products.

@@ -28,6 +28,7 @@
 		76558CE96F46052203B07C0D /* AppLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLinks.swift; sourceTree = "<group>"; };
 		49B2AE68866378572A4D85FE /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		43A64ACCD0ED47BD8470826A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55F7725752BD478EBA232ED4 /* Cafeina.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Cafeina.entitlements; sourceTree = "<group>"; };
 		9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8FD2182F04140DAAC0985EB /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -64,6 +65,7 @@
 				76558CE96F46052203B07C0D /* AppLinks.swift */,
 				49B2AE68866378572A4D85FE /* AboutWindowController.swift */,
 				43A64ACCD0ED47BD8470826A /* Info.plist */,
+				55F7725752BD478EBA232ED4 /* Cafeina.entitlements */,
 				9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */,
 			);
 			path = Cafeina;
@@ -240,6 +242,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Cafeina/Cafeina.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -268,6 +271,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Cafeina/Cafeina.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
