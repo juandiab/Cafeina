@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!--
+    Cafeina — Candidate B: "Bean Eye"
+    A coffee bean whose crease is the slit pupil of a wide-open amber eye. Bean = coffee, eye = awake.
+    macOS Big Sur icon geometry: 824x824 tile at (100,100), corner radius 184.5 (22.37%).
+    Palette: crema tile #FAF0DE → #E6CFA6, espresso bean #4A2A19 → #1E0F08, amber iris #FFD273 → #D97A1E.
+  -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF2E2"/>
+      <stop offset="0.6" stop-color="#F0DDBB"/>
+      <stop offset="1" stop-color="#E4CBA0"/>
+    </linearGradient>
+    <radialGradient id="tileLight" cx="0.5" cy="0.0" r="0.8">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tileRim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="0.3" stop-color="#FFFFFF" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="tileClip">
+      <rect x="100" y="100" width="824" height="824" rx="184.5" ry="184.5"/>
+    </clipPath>
+
+    <linearGradient id="bean" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4E2D1B"/>
+      <stop offset="0.5" stop-color="#31190E"/>
+      <stop offset="1" stop-color="#1C0E07"/>
+    </linearGradient>
+    <linearGradient id="beanEdge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8A5A3C" stop-opacity="0.9"/>
+      <stop offset="0.5" stop-color="#8A5A3C" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="iris" cx="0.4" cy="0.35" r="0.72">
+      <stop offset="0" stop-color="#FFDF8F"/>
+      <stop offset="0.45" stop-color="#F7B248"/>
+      <stop offset="0.85" stop-color="#E0862A"/>
+      <stop offset="1" stop-color="#C96A16"/>
+    </radialGradient>
+    <radialGradient id="irisShade" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0.72" stop-color="#5A2A0C" stop-opacity="0"/>
+      <stop offset="1" stop-color="#5A2A0C" stop-opacity="0.55"/>
+    </radialGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+    <filter id="tiny" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+
+  <!-- ===== tile ===== -->
+  <rect x="100" y="100" width="824" height="824" rx="184.5" ry="184.5" fill="url(#tile)"/>
+  <rect x="100" y="100" width="824" height="824" rx="184.5" ry="184.5" fill="url(#tileLight)"/>
+
+  <g clip-path="url(#tileClip)">
+    <!-- cast shadow -->
+    <g transform="translate(512 548) rotate(-12)">
+      <path d="M -350 0 C -245 -170, -108 -234, 0 -234 C 108 -234, 245 -170, 350 0 C 245 170, 108 234, 0 234 C -108 234, -245 170, -350 0 Z"
+            fill="#2A1508" opacity="0.42" filter="url(#soft)"/>
+    </g>
+
+    <g transform="translate(512 512) rotate(-12)">
+      <!-- bean / eye almond -->
+      <path id="almond" d="M -350 0 C -245 -170, -108 -234, 0 -234 C 108 -234, 245 -170, 350 0 C 245 170, 108 234, 0 234 C -108 234, -245 170, -350 0 Z"
+            fill="url(#bean)"/>
+      <!-- top-edge light on the bean -->
+      <path d="M -350 0 C -245 -170, -108 -234, 0 -234 C 108 -234, 245 -170, 350 0 C 245 170, 108 234, 0 234 C -108 234, -245 170, -350 0 Z"
+            fill="none" stroke="url(#beanEdge)" stroke-width="6" transform="scale(0.985)"/>
+
+      <!-- iris -->
+      <circle cx="0" cy="0" r="160" fill="#140A05" opacity="0.5" filter="url(#tiny)" transform="translate(0 8)"/>
+      <circle cx="0" cy="0" r="158" fill="url(#iris)"/>
+      <circle cx="0" cy="0" r="158" fill="url(#irisShade)"/>
+
+      <!-- pupil = bean crease: a tapered lens with a gentle S, like the seam of a bean -->
+      <path d="M 0 -140
+               C -20 -120, -37 -94, -37 -60
+               C -37 -30, -35 -14, -32 0
+               C -29 14, -20 34, -19 60
+               C -18 94, -10 120, 0 140
+               C 10 120, 18 94, 19 60
+               C 20 34, 29 14, 32 0
+               C 35 -14, 37 -30, 37 -60
+               C 37 -94, 20 -120, 0 -140 Z"
+            fill="#1C0E07"/>
+
+      <!-- catchlight -->
+      <ellipse cx="-62" cy="-66" rx="30" ry="20" fill="#FFFFFF" opacity="0.9" transform="rotate(-30 -62 -66)"/>
+    </g>
+  </g>
+
+  <!-- inner top light on the tile edge -->
+  <rect x="102" y="102" width="820" height="820" rx="182.5" ry="182.5" fill="none" stroke="url(#tileRim)" stroke-width="4"/>
+</svg>
