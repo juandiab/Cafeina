@@ -35,3 +35,18 @@ Audited read-only at `main` @ 3f5ec3b (2026-08-17). Items marked ✅ are being f
 
 ## Reviewer notes (paste into App Store Connect)
 > Cafeina is a menu-bar-only utility (no Dock icon, no main window). After launch, look for the coffee-cup icon in the menu bar near the clock; a one-time alert also points to it. Left-click the icon toggles keep-awake (filled cup = on, outline = off; hover for tooltip). Right-click or Control-click opens the menu: Keep Awake ▸ 30 min / 1 h / 2 h / Indefinitely, Turn Off, Allow Display to Sleep, Battery options, Open at Login (opt-in; uses SMAppService), About Cafeina, Privacy Policy, Support, Quit. Verify keep-awake in Terminal: `pmset -g assertions` (shows "Cafeina is keeping the Mac awake"). No account, no network access, no data collection, no in-app purchases. Privacy policy: https://www.nexxus-tech.com/cafeina/privacy. Cafeina is an independent app.
+
+## Status
+
+Fixed on `agent/polish` (verified: Release universal build, zero warnings; bundle shows 1.1 / 2, `ITSAppUsesNonExemptEncryption=false`, `Resources/PrivacyInfo.xcprivacy` present):
+
+- P1 Reviewability — `applicationShouldHandleReopen` opens the About window when no window is visible.
+- P1 UX — Control-click on the status item opens the menu (same as right-click); tooltip and first-launch hint say so.
+- P1 UX — Open at Login: `.requiresApproval` jumps to System Settings › Login Items; register/unregister errors show an alert with an "Open Login Items" button.
+- P2 UX — First-launch hint activates the app before `runModal()`.
+- P2 Metadata — Website link (About + README) is `https://www.nexxus-tech.com/cafeina`.
+- P2 Privacy — `Cafeina/PrivacyInfo.xcprivacy` added (tracking=false, no collected data, UserDefaults `CA92.1`) and copied into the bundle.
+- P3 Metadata — `ITSAppUsesNonExemptEncryption=false` in Info.plist.
+- P3 Build — Info.plist versions are `$(MARKETING_VERSION)` / `$(CURRENT_PROJECT_VERSION)`.
+
+Handled elsewhere: P0 Sandbox, P3 template icon, P3 DMG rebuild (`main` / other branches). Remaining (ASC-side, no code): P0/P2 metadata wording and privacy-URL prerender.

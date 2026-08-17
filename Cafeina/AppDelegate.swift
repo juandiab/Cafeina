@@ -19,4 +19,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         powerAssertionManager.disable()
     }
+
+    /// Reopening a menu-bar-only app (Dock, Finder, Spotlight) shows nothing by default.
+    /// Surface the About window so a relaunch visibly does something.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if !flag {
+            AboutWindowController.shared.show()
+        }
+        return false
+    }
 }
