@@ -13,6 +13,8 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 - Menu-bar countdown showing the time remaining in a timed session (can be turned off)
 - Global keyboard shortcut ⌃⌥⌘C to toggle keep-awake from any app (can be turned off)
 - Quiet notifications when Cafeina turns itself off (timer ended or battery auto-off; can be turned off)
+- Keep Awake While Running: pick apps (Zoom, Keynote, long exports…) that keep the Mac awake while they run
+- Keep Awake While Presenting: stays awake while an external, mirrored, or AirPlay display is connected
 - Battery-aware auto-off: turn off when on battery, or below 20%
 - Allow Display to Sleep mode: keeps the Mac awake but lets the screen turn off
 - Optional Open at Login

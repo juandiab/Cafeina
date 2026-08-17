@@ -1,4 +1,5 @@
 import AppKit
+import UniformTypeIdentifiers
 
 @MainActor
 final class MenuBarController: NSObject {
@@ -6,6 +7,8 @@ final class MenuBarController: NSObject {
     private let powerAssertionManager: PowerAssertionManager
     private let loginItemManager: LoginItemManager
     private let powerSourceMonitor: PowerSourceMonitor
+    private let appTriggerMonitor: AppTriggerMonitor
+    private let displayMonitor: DisplayMonitor
     private let hotKeyManager = HotKeyManager()
     private let notificationManager = NotificationManager()
 
@@ -17,6 +20,16 @@ final class MenuBarController: NSObject {
     /// explicit user enable while already on battery is respected.
     private var isBatteryAutoOffConditionMet = false
 
+    /// Whether an automatic keep-awake rule (trigger app running / presenting) held
+    /// at the last evaluation. Rules only act on transitions, so a manual Turn Off
+    /// while a trigger app keeps running is respected until the rule re-arms.
+    private var isAutoKeepAwakeConditionMet = false
+
+    /// True while the current keep-awake session was started by an automatic rule.
+    /// Cleared by every manual enable/disable and by battery auto-off, so a rule
+    /// ending never turns off a session the user (or the battery logic) owns.
+    private var isKeepAwakeEnabledAutomatically = false
+
     private let keepAwakeOptions: [KeepAwakeDuration] = [
         .minutes(30),
         .minutes(60),
@@ -27,22 +40,35 @@ final class MenuBarController: NSObject {
     init(
         powerAssertionManager: PowerAssertionManager,
         loginItemManager: LoginItemManager,
-        powerSourceMonitor: PowerSourceMonitor
+        powerSourceMonitor: PowerSourceMonitor,
+        appTriggerMonitor: AppTriggerMonitor,
+        displayMonitor: DisplayMonitor
     ) {
         self.powerAssertionManager = powerAssertionManager
         self.loginItemManager = loginItemManager
         self.powerSourceMonitor = powerSourceMonitor
+        self.appTriggerMonitor = appTriggerMonitor
+        self.displayMonitor = displayMonitor
         self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         super.init()
 
         self.powerAssertionManager.onStateChange = { [weak self] in
             Task { @MainActor in
+                self?.reconcileAutoKeepAwakeOwnership()
                 self?.updateStatusItem()
             }
         }
 
         self.powerSourceMonitor.onChange = { [weak self] in
             self?.evaluateBatteryAutoOff()
+        }
+
+        self.appTriggerMonitor.onChange = { [weak self] in
+            self?.evaluateAutoKeepAwake()
+        }
+
+        self.displayMonitor.onChange = { [weak self] in
+            self?.evaluateAutoKeepAwake()
         }
 
         configureStatusItem()
@@ -121,6 +147,7 @@ final class MenuBarController: NSObject {
     }
 
     @objc private func toggleCafeina() {
+        isKeepAwakeEnabledAutomatically = false
         if powerAssertionManager.isEnabled {
             powerAssertionManager.disable()
         } else {
@@ -132,10 +159,12 @@ final class MenuBarController: NSObject {
         guard let duration = sender.representedObject as? KeepAwakeDuration else {
             return
         }
+        isKeepAwakeEnabledAutomatically = false
         powerAssertionManager.enable(for: duration)
     }
 
     @objc private func turnOff() {
+        isKeepAwakeEnabledAutomatically = false
         powerAssertionManager.disable()
     }
 
@@ -169,12 +198,139 @@ final class MenuBarController: NSObject {
         let wasConditionMet = isBatteryAutoOffConditionMet
         let isConditionMet = batteryAutoOffConditionHolds()
         isBatteryAutoOffConditionMet = isConditionMet
+        // Battery state gates the automatic keep-awake rules, so re-evaluate them too.
+        defer { evaluateAutoKeepAwake() }
 
         guard isConditionMet, !wasConditionMet, powerAssertionManager.isEnabled else {
             return
         }
+        isKeepAwakeEnabledAutomatically = false
         powerAssertionManager.disable()
         notificationManager.notifyTurnedOff(reason: batteryAutoOffReason())
+    }
+
+    // MARK: - Automatic keep-awake rules (trigger apps / presenting)
+
+    /// Turns keep-awake on when an automatic rule newly starts holding (a trigger
+    /// app launches, or an external/mirrored/AirPlay display appears while "Keep
+    /// Awake While Presenting" is on) and off again when no rule holds anymore —
+    /// but only if the rules turned it on. Precedence:
+    /// - Manual actions win: they clear `isKeepAwakeEnabledAutomatically`, so a
+    ///   manual Turn Off is not undone until the rules re-arm (all trigger apps quit
+    ///   / presenting ends, then one starts again), and a manual enable persists
+    ///   after the trigger ends.
+    /// - Battery auto-off wins over the rules: they never turn keep-awake on while a
+    ///   battery auto-off condition holds, and battery auto-off clears the flag.
+    private func evaluateAutoKeepAwake() {
+        let wasConditionMet = isAutoKeepAwakeConditionMet
+        let isConditionMet = autoKeepAwakeConditionHolds() && !isBatteryAutoOffConditionMet
+        isAutoKeepAwakeConditionMet = isConditionMet
+
+        guard isConditionMet != wasConditionMet else {
+            return
+        }
+
+        if isConditionMet {
+            guard !powerAssertionManager.isEnabled else {
+                return
+            }
+            powerAssertionManager.enable(for: .indefinite)
+            isKeepAwakeEnabledAutomatically = powerAssertionManager.isEnabled
+        } else if isKeepAwakeEnabledAutomatically {
+            isKeepAwakeEnabledAutomatically = false
+            powerAssertionManager.disable()
+        }
+    }
+
+    /// Rules only ever start an `.indefinite` session. If the session is gone or has a
+    /// different duration, something else (menu, hotkey, "Until a Time…", a Shortcut,
+    /// timer expiry, battery auto-off) changed it, so the rules no longer own it.
+    /// Called after every `PowerAssertionManager` state change.
+    private func reconcileAutoKeepAwakeOwnership() {
+        guard isKeepAwakeEnabledAutomatically else {
+            return
+        }
+        if !powerAssertionManager.isEnabled || powerAssertionManager.activeDuration != .indefinite {
+            isKeepAwakeEnabledAutomatically = false
+        }
+    }
+
+    private func autoKeepAwakeConditionHolds() -> Bool {
+        if appTriggerMonitor.isAnyTriggerAppRunning {
+            return true
+        }
+        return AppSettings.keepAwakeWhilePresenting && displayMonitor.isPresenting
+    }
+
+    /// Short explanation of why the rules are keeping the Mac awake, e.g.
+    /// "Zoom is running", "presenting". Nil unless the current session is automatic.
+    private func autoKeepAwakeReason() -> String? {
+        guard isKeepAwakeEnabledAutomatically else {
+            return nil
+        }
+
+        var reasons: [String] = []
+        let names = appTriggerMonitor.runningTriggerAppNames
+        if names.count == 1 {
+            reasons.append("\(names[0]) is running")
+        } else if names.count > 1 {
+            reasons.append("\(names.joined(separator: ", ")) are running")
+        }
+        if AppSettings.keepAwakeWhilePresenting, displayMonitor.isPresenting {
+            reasons.append("presenting")
+        }
+        return reasons.isEmpty ? nil : reasons.joined(separator: ", ")
+    }
+
+    @objc private func toggleKeepAwakeWhilePresenting() {
+        AppSettings.keepAwakeWhilePresenting.toggle()
+        evaluateAutoKeepAwake()
+    }
+
+    @objc private func addTriggerApp(_ sender: NSMenuItem) {
+        guard let bundleID = sender.representedObject as? String else {
+            return
+        }
+        appTriggerMonitor.add(bundleID: bundleID, name: sender.title)
+    }
+
+    @objc private func removeTriggerApp(_ sender: NSMenuItem) {
+        guard let bundleID = sender.representedObject as? String else {
+            return
+        }
+        appTriggerMonitor.remove(bundleID: bundleID)
+    }
+
+    @objc private func chooseTriggerApp() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose Apps That Keep the Mac Awake"
+        panel.prompt = "Add"
+        panel.message = "Cafeina keeps the Mac awake while the chosen apps are running."
+        panel.allowedContentTypes = [.application]
+        panel.directoryURL = URL(fileURLWithPath: "/Applications", isDirectory: true)
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = true
+        panel.treatsFilePackagesAsDirectories = false
+
+        NSApp.activate(ignoringOtherApps: true)
+        guard panel.runModal() == .OK else {
+            return
+        }
+
+        for url in panel.urls {
+            guard let bundleID = Bundle(url: url)?.bundleIdentifier, !bundleID.isEmpty else {
+                continue
+            }
+            var name = FileManager.default.displayName(atPath: url.path)
+            if name.hasSuffix(".app") {
+                name = String(name.dropLast(4))
+            }
+            if name.isEmpty {
+                name = url.deletingPathExtension().lastPathComponent
+            }
+            appTriggerMonitor.add(bundleID: bundleID, name: name)
+        }
     }
 
     private func batteryAutoOffConditionHolds() -> Bool {
@@ -251,6 +407,7 @@ final class MenuBarController: NSObject {
         menu.addItem(makeAllowDisplaySleepMenuItem())
         addPreferenceItems(to: menu)
         menu.addItem(makeBatteryMenuItem())
+        addTriggerSection(to: menu)
 
         menu.addItem(.separator())
 
@@ -328,8 +485,101 @@ final class MenuBarController: NSObject {
         return batteryItem
     }
 
+    /// Adds the automatic-rule items: the "Keep Awake While Running" submenu and the
+    /// "Keep Awake While Presenting" checkbox.
+    private func addTriggerSection(to menu: NSMenu) {
+        let triggerAppsItem = NSMenuItem(title: "Keep Awake While Running", action: nil, keyEquivalent: "")
+        triggerAppsItem.submenu = makeTriggerAppsMenu()
+        triggerAppsItem.toolTip = "Keeps the Mac awake while any of the chosen apps is running."
+        menu.addItem(triggerAppsItem)
+
+        let presentingItem = NSMenuItem(
+            title: "Keep Awake While Presenting",
+            action: #selector(toggleKeepAwakeWhilePresenting),
+            keyEquivalent: ""
+        )
+        presentingItem.state = AppSettings.keepAwakeWhilePresenting ? .on : .off
+        presentingItem.toolTip = "Turns on when an external, mirrored, or AirPlay display connects."
+        menu.addItem(presentingItem)
+    }
+
+    private func makeTriggerAppsMenu() -> NSMenu {
+        let submenu = NSMenu()
+        let maxRunningAppsShown = 15
+        let ownBundleID = Bundle.main.bundleIdentifier
+
+        // Configured trigger apps (checked; click removes).
+        let configured = appTriggerMonitor.triggerBundleIDs
+            .map { (bundleID: $0, name: appTriggerMonitor.name(forBundleID: $0)) }
+            .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        if configured.isEmpty {
+            // No action, so it renders disabled as a hint.
+            submenu.addItem(NSMenuItem(title: "No Apps Selected", action: nil, keyEquivalent: ""))
+        }
+        for app in configured {
+            let item = NSMenuItem(title: app.name, action: #selector(removeTriggerApp(_:)), keyEquivalent: "")
+            item.representedObject = app.bundleID
+            item.state = .on
+            item.image = menuIcon(forBundleID: app.bundleID)
+            item.toolTip = "Click to stop keeping the Mac awake while \(app.name) runs."
+            submenu.addItem(item)
+        }
+
+        // Currently running regular apps that are not yet triggers (click adds).
+        let running = NSWorkspace.shared.runningApplications
+            .filter { app in
+                guard app.activationPolicy == .regular, !app.isTerminated,
+                      let bundleID = app.bundleIdentifier, bundleID != ownBundleID else {
+                    return false
+                }
+                return !appTriggerMonitor.contains(bundleID: bundleID)
+            }
+            .sorted { ($0.localizedName ?? "").localizedCaseInsensitiveCompare($1.localizedName ?? "") == .orderedAscending }
+            .prefix(maxRunningAppsShown)
+        if !running.isEmpty {
+            submenu.addItem(.separator())
+            for app in running {
+                guard let bundleID = app.bundleIdentifier else {
+                    continue
+                }
+                let name = app.localizedName ?? bundleID
+                let item = NSMenuItem(title: name, action: #selector(addTriggerApp(_:)), keyEquivalent: "")
+                item.representedObject = bundleID
+                item.image = app.icon.map(scaledMenuIcon)
+                item.toolTip = "Keep the Mac awake while \(name) is running."
+                submenu.addItem(item)
+            }
+        }
+
+        submenu.addItem(.separator())
+        submenu.addItem(NSMenuItem(title: "Choose App…", action: #selector(chooseTriggerApp), keyEquivalent: ""))
+        return submenu
+    }
+
+    private func menuIcon(forBundleID bundleID: String) -> NSImage? {
+        if let icon = NSWorkspace.shared.runningApplications
+            .first(where: { $0.bundleIdentifier == bundleID })?.icon {
+            return scaledMenuIcon(icon)
+        }
+        guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleID) else {
+            return nil
+        }
+        return scaledMenuIcon(NSWorkspace.shared.icon(forFile: url.path))
+    }
+
+    private func scaledMenuIcon(_ image: NSImage) -> NSImage {
+        guard let copy = image.copy() as? NSImage else {
+            return image
+        }
+        copy.size = NSSize(width: 16, height: 16)
+        return copy
+    }
+
     private func statusTitle(isEnabled: Bool) -> String {
-        let title = keepAwakeStatusTitle(isEnabled: isEnabled)
+        var title = keepAwakeStatusTitle(isEnabled: isEnabled)
+        if isEnabled, let reason = autoKeepAwakeReason() {
+            title += " (\(reason))"
+        }
 
         guard powerSourceMonitor.isOnBattery, let percent = powerSourceMonitor.batteryPercent else {
             return title

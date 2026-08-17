@@ -58,4 +58,32 @@ enum AppSettings {
     private static func bool(forKey key: String, default defaultValue: Bool) -> Bool {
         UserDefaults.standard.object(forKey: key) as? Bool ?? defaultValue
     }
+
+    // MARK: - Automatic keep-awake rules
+
+    private enum TriggerKey {
+        static let triggerAppBundleIDs = "triggerAppBundleIDs"
+        static let triggerAppNames = "triggerAppNames"
+        static let keepAwakeWhilePresenting = "keepAwakeWhilePresenting"
+    }
+
+    /// Bundle identifiers of apps that keep the Mac awake while they are running
+    /// ("Keep Awake While Running"). Kept in the order the user added them.
+    static var triggerAppBundleIDs: [String] {
+        get { UserDefaults.standard.stringArray(forKey: TriggerKey.triggerAppBundleIDs) ?? [] }
+        set { UserDefaults.standard.set(newValue, forKey: TriggerKey.triggerAppBundleIDs) }
+    }
+
+    /// Display names for `triggerAppBundleIDs`, keyed by bundle identifier, so the
+    /// menu can name apps that are not currently running.
+    static var triggerAppNames: [String: String] {
+        get { UserDefaults.standard.dictionary(forKey: TriggerKey.triggerAppNames) as? [String: String] ?? [:] }
+        set { UserDefaults.standard.set(newValue, forKey: TriggerKey.triggerAppNames) }
+    }
+
+    /// Turn keep-awake on while an external, mirrored, or AirPlay display is connected.
+    static var keepAwakeWhilePresenting: Bool {
+        get { UserDefaults.standard.bool(forKey: TriggerKey.keepAwakeWhilePresenting) }
+        set { UserDefaults.standard.set(newValue, forKey: TriggerKey.keepAwakeWhilePresenting) }
+    }
 }
