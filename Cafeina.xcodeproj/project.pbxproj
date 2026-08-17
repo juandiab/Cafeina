@@ -12,6 +12,8 @@
 		218F2F0824ED4048941529FD /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D758098724F23895130C5 /* MenuBarController.swift */; };
 		D116985384254235A8170FC6 /* PowerAssertionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FADF8F937464A6E99829225 /* PowerAssertionManager.swift */; };
 		F9B6E57A691E45CFAF23C7E4 /* LoginItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F8B3D157B94F20AF38E520 /* LoginItemManager.swift */; };
+		BEEDA80A8D2E09AA2CEA87B5 /* AppLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76558CE96F46052203B07C0D /* AppLinks.swift */; };
+		7F3B06F79594E44AB7A20039 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2AE68866378572A4D85FE /* AboutWindowController.swift */; };
 		D754476FF66444B0A256F07F /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8FD2182F04140DAAC0985EB /* IOKit.framework */; };
 		8F38E48A3DD140938CB1E0C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -23,6 +25,8 @@
 		145D758098724F23895130C5 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
 		0FADF8F937464A6E99829225 /* PowerAssertionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerAssertionManager.swift; sourceTree = "<group>"; };
 		70F8B3D157B94F20AF38E520 /* LoginItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemManager.swift; sourceTree = "<group>"; };
+		76558CE96F46052203B07C0D /* AppLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLinks.swift; sourceTree = "<group>"; };
+		49B2AE68866378572A4D85FE /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		43A64ACCD0ED47BD8470826A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8FD2182F04140DAAC0985EB /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -57,6 +61,8 @@
 				145D758098724F23895130C5 /* MenuBarController.swift */,
 				0FADF8F937464A6E99829225 /* PowerAssertionManager.swift */,
 				70F8B3D157B94F20AF38E520 /* LoginItemManager.swift */,
+				76558CE96F46052203B07C0D /* AppLinks.swift */,
+				49B2AE68866378572A4D85FE /* AboutWindowController.swift */,
 				43A64ACCD0ED47BD8470826A /* Info.plist */,
 				9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */,
 			);
@@ -178,6 +184,8 @@
 				218F2F0824ED4048941529FD /* MenuBarController.swift in Sources */,
 				D116985384254235A8170FC6 /* PowerAssertionManager.swift in Sources */,
 				F9B6E57A691E45CFAF23C7E4 /* LoginItemManager.swift in Sources */,
+				BEEDA80A8D2E09AA2CEA87B5 /* AppLinks.swift in Sources */,
+				7F3B06F79594E44AB7A20039 /* AboutWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,7 +205,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -209,6 +217,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					arm64,
+					x86_64,
+				);
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
@@ -217,7 +229,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
@@ -226,21 +239,23 @@
 		794BF399466D4FFA90FF1841 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = SR8DQF26N7;
 				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Cafeina/Info.plist;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.juampa.Cafeina;
 				PRODUCT_BUNDLE_PACKAGE_TYPE = APPL;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -252,21 +267,23 @@
 		794BF399466D4FFA90FF1842 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = SR8DQF26N7;
 				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Cafeina/Info.plist;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.juampa.Cafeina;
 				PRODUCT_BUNDLE_PACKAGE_TYPE = APPL;
 				PRODUCT_NAME = "$(TARGET_NAME)";
