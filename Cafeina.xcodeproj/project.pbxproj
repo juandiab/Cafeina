@@ -14,6 +14,8 @@
 		F9B6E57A691E45CFAF23C7E4 /* LoginItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F8B3D157B94F20AF38E520 /* LoginItemManager.swift */; };
 		BEEDA80A8D2E09AA2CEA87B5 /* AppLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76558CE96F46052203B07C0D /* AppLinks.swift */; };
 		7F3B06F79594E44AB7A20039 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2AE68866378572A4D85FE /* AboutWindowController.swift */; };
+		A7DD152460644A5498E86BD4 /* PowerSourceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13E3F27734450BA9326856 /* PowerSourceMonitor.swift */; };
+		5B0001E37D5946C4B1B83A33 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D379825A0EC4EF1A070A7F7 /* AppSettings.swift */; };
 		D754476FF66444B0A256F07F /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8FD2182F04140DAAC0985EB /* IOKit.framework */; };
 		8F38E48A3DD140938CB1E0C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -27,6 +29,8 @@
 		70F8B3D157B94F20AF38E520 /* LoginItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemManager.swift; sourceTree = "<group>"; };
 		76558CE96F46052203B07C0D /* AppLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLinks.swift; sourceTree = "<group>"; };
 		49B2AE68866378572A4D85FE /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
+		8A13E3F27734450BA9326856 /* PowerSourceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerSourceMonitor.swift; sourceTree = "<group>"; };
+		1D379825A0EC4EF1A070A7F7 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		43A64ACCD0ED47BD8470826A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8FD2182F04140DAAC0985EB /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -63,6 +67,8 @@
 				70F8B3D157B94F20AF38E520 /* LoginItemManager.swift */,
 				76558CE96F46052203B07C0D /* AppLinks.swift */,
 				49B2AE68866378572A4D85FE /* AboutWindowController.swift */,
+				8A13E3F27734450BA9326856 /* PowerSourceMonitor.swift */,
+				1D379825A0EC4EF1A070A7F7 /* AppSettings.swift */,
 				43A64ACCD0ED47BD8470826A /* Info.plist */,
 				9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */,
 			);
@@ -186,6 +192,8 @@
 				F9B6E57A691E45CFAF23C7E4 /* LoginItemManager.swift in Sources */,
 				BEEDA80A8D2E09AA2CEA87B5 /* AppLinks.swift in Sources */,
 				7F3B06F79594E44AB7A20039 /* AboutWindowController.swift in Sources */,
+				A7DD152460644A5498E86BD4 /* PowerSourceMonitor.swift in Sources */,
+				5B0001E37D5946C4B1B83A33 /* AppSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

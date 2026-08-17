@@ -5,6 +5,12 @@ final class MenuBarController: NSObject {
     private let statusItem: NSStatusItem
     private let powerAssertionManager: PowerAssertionManager
     private let loginItemManager: LoginItemManager
+    private let powerSourceMonitor: PowerSourceMonitor
+
+    /// Whether the battery auto-off condition held at the last evaluation.
+    /// Keep-awake is only turned off when the condition newly becomes true, so an
+    /// explicit user enable while already on battery is respected.
+    private var isBatteryAutoOffConditionMet = false
 
     private let keepAwakeOptions: [KeepAwakeDuration] = [
         .minutes(30),
@@ -13,9 +19,14 @@ final class MenuBarController: NSObject {
         .indefinite
     ]
 
-    init(powerAssertionManager: PowerAssertionManager, loginItemManager: LoginItemManager) {
+    init(
+        powerAssertionManager: PowerAssertionManager,
+        loginItemManager: LoginItemManager,
+        powerSourceMonitor: PowerSourceMonitor
+    ) {
         self.powerAssertionManager = powerAssertionManager
         self.loginItemManager = loginItemManager
+        self.powerSourceMonitor = powerSourceMonitor
         self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         super.init()
 
@@ -25,8 +36,13 @@ final class MenuBarController: NSObject {
             }
         }
 
+        self.powerSourceMonitor.onChange = { [weak self] in
+            self?.evaluateBatteryAutoOff()
+        }
+
         configureStatusItem()
         updateStatusItem()
+        evaluateBatteryAutoOff()
         showFirstLaunchHintIfNeeded()
     }
 
@@ -72,18 +88,14 @@ final class MenuBarController: NSObject {
     }
 
     private func makeStatusImage(isEnabled: Bool) -> NSImage? {
-        let color = isEnabled
-            ? NSColor(calibratedRed: 0.55, green: 0.31, blue: 0.12, alpha: 1)
-            : NSColor(calibratedWhite: 0.58, alpha: 1)
-        let baseConfiguration = NSImage.SymbolConfiguration(pointSize: 15, weight: .semibold)
-        let colorConfiguration = NSImage.SymbolConfiguration(hierarchicalColor: color)
+        let configuration = NSImage.SymbolConfiguration(pointSize: 15, weight: .semibold)
         let image = NSImage(
-            systemSymbolName: "cup.and.saucer.fill",
+            systemSymbolName: isEnabled ? "cup.and.saucer.fill" : "cup.and.saucer",
             accessibilityDescription: "Cafeina"
         )?
-        .withSymbolConfiguration(baseConfiguration.applying(colorConfiguration))
+        .withSymbolConfiguration(configuration)
 
-        image?.isTemplate = false
+        image?.isTemplate = true
         return image
     }
 
@@ -123,6 +135,52 @@ final class MenuBarController: NSObject {
         loginItemManager.toggleOpenAtLogin()
     }
 
+    @objc private func toggleAllowDisplaySleep() {
+        powerAssertionManager.allowDisplaySleep.toggle()
+    }
+
+    @objc private func toggleDisableWhenOnBattery() {
+        AppSettings.disableWhenOnBattery.toggle()
+        evaluateBatteryAutoOff()
+    }
+
+    @objc private func toggleDisableBelowBatteryPercent() {
+        AppSettings.disableBelowBatteryPercent.toggle()
+        evaluateBatteryAutoOff()
+    }
+
+    /// Turns keep-awake off when a battery auto-off condition newly becomes true.
+    /// Called on power source changes and when a battery setting is toggled.
+    /// Keep-awake is never re-enabled automatically.
+    private func evaluateBatteryAutoOff() {
+        let wasConditionMet = isBatteryAutoOffConditionMet
+        let isConditionMet = batteryAutoOffConditionHolds()
+        isBatteryAutoOffConditionMet = isConditionMet
+
+        guard isConditionMet, !wasConditionMet, powerAssertionManager.isEnabled else {
+            return
+        }
+        powerAssertionManager.disable()
+    }
+
+    private func batteryAutoOffConditionHolds() -> Bool {
+        guard powerSourceMonitor.isOnBattery else {
+            return false
+        }
+
+        if AppSettings.disableWhenOnBattery {
+            return true
+        }
+
+        if AppSettings.disableBelowBatteryPercent,
+           let percent = powerSourceMonitor.batteryPercent,
+           percent <= AppSettings.lowBatteryThresholdPercent {
+            return true
+        }
+
+        return false
+    }
+
     @objc private func showAbout() {
         AboutWindowController.shared.show()
     }
@@ -137,6 +195,8 @@ final class MenuBarController: NSObject {
 
     private func showContextMenu() {
         let menu = NSMenu()
+        // Enabled state is managed explicitly below rather than by target/action lookup.
+        menu.autoenablesItems = false
         let isEnabled = powerAssertionManager.isEnabled
 
         let statusMenuItem = NSMenuItem(
@@ -172,6 +232,9 @@ final class MenuBarController: NSObject {
         )
         turnOffItem.isEnabled = isEnabled
         menu.addItem(turnOffItem)
+
+        menu.addItem(makeAllowDisplaySleepMenuItem())
+        menu.addItem(makeBatteryMenuItem())
 
         menu.addItem(.separator())
 
@@ -209,7 +272,56 @@ final class MenuBarController: NSObject {
         statusItem.menu = nil
     }
 
+    private func makeAllowDisplaySleepMenuItem() -> NSMenuItem {
+        let item = NSMenuItem(
+            title: "Allow Display to Sleep",
+            action: #selector(toggleAllowDisplaySleep),
+            keyEquivalent: ""
+        )
+        item.state = powerAssertionManager.allowDisplaySleep ? .on : .off
+        item.toolTip = "Keeps the Mac awake but lets the screen turn off."
+        return item
+    }
+
+    private func makeBatteryMenuItem() -> NSMenuItem {
+        let hasBattery = powerSourceMonitor.batteryPercent != nil
+
+        let onBatteryItem = NSMenuItem(
+            title: "Turn Off When on Battery",
+            action: #selector(toggleDisableWhenOnBattery),
+            keyEquivalent: ""
+        )
+        onBatteryItem.state = AppSettings.disableWhenOnBattery ? .on : .off
+        onBatteryItem.isEnabled = hasBattery
+
+        let lowBatteryItem = NSMenuItem(
+            title: "Turn Off Below \(AppSettings.lowBatteryThresholdPercent)%",
+            action: #selector(toggleDisableBelowBatteryPercent),
+            keyEquivalent: ""
+        )
+        lowBatteryItem.state = AppSettings.disableBelowBatteryPercent ? .on : .off
+        lowBatteryItem.isEnabled = hasBattery
+
+        let batteryMenu = NSMenu()
+        batteryMenu.autoenablesItems = false
+        batteryMenu.addItem(onBatteryItem)
+        batteryMenu.addItem(lowBatteryItem)
+
+        let batteryItem = NSMenuItem(title: "Battery", action: nil, keyEquivalent: "")
+        batteryItem.submenu = batteryMenu
+        return batteryItem
+    }
+
     private func statusTitle(isEnabled: Bool) -> String {
+        let title = keepAwakeStatusTitle(isEnabled: isEnabled)
+
+        guard powerSourceMonitor.isOnBattery, let percent = powerSourceMonitor.batteryPercent else {
+            return title
+        }
+        return "\(title) · Battery \(percent)%"
+    }
+
+    private func keepAwakeStatusTitle(isEnabled: Bool) -> String {
         guard isEnabled else {
             return "Cafeina: Off"
         }

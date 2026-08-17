@@ -8,8 +8,10 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 ## Features
 
-- Toggle keep-awake from the menu bar cup icon
+- Toggle keep-awake from the menu bar cup icon (filled when on, outlined when off; matches light/dark menu bars)
 - Timed modes: 30 minutes, 1 hour, 2 hours, or indefinitely
+- Battery-aware auto-off: turn off when on battery, or below 20%
+- Allow Display to Sleep mode: keeps the Mac awake but lets the screen turn off
 - Optional Open at Login
 - About, Privacy Policy, and Support links in the menu
 
