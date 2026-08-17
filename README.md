@@ -9,7 +9,10 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 ## Features
 
 - Toggle keep-awake from the menu bar cup icon (filled when on, outlined when off; matches light/dark menu bars)
-- Timed modes: 30 minutes, 1 hour, 2 hours, or indefinitely
+- Timed modes: 30 minutes, 1 hour, 2 hours, indefinitely, or until a time of day you pick
+- Menu-bar countdown showing the time remaining in a timed session (can be turned off)
+- Global keyboard shortcut ⌃⌥⌘C to toggle keep-awake from any app (can be turned off)
+- Quiet notifications when Cafeina turns itself off (timer ended or battery auto-off; can be turned off)
 - Battery-aware auto-off: turn off when on battery, or below 20%
 - Allow Display to Sleep mode: keeps the Mac awake but lets the screen turn off
 - Optional Open at Login

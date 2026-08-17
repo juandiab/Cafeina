@@ -9,6 +9,10 @@ All notable changes to Cafeina are documented in this file.
 - Battery-aware auto-off options in a new Battery submenu: "Turn Off When on Battery" and "Turn Off Below 20%" (disabled on Macs without a battery)
 - "Allow Display to Sleep" mode that keeps the Mac awake while letting the screen turn off
 - Shortcuts & Siri support via App Intents: Keep Mac Awake (with duration), Turn Off, Toggle, Get Status; Focus-mode automations (see `docs/SHORTCUTS.md`)
+- "Until a Time…" keep-awake mode: pick a wall-clock time in a small panel and Cafeina stays on until the next occurrence of that time (today, or tomorrow if it has already passed)
+- Menu-bar countdown: the remaining time of a timed session ("42m", "1h 05m") is shown next to the cup icon; toggle with "Show Time Remaining in Menu Bar"
+- Global keyboard shortcut ⌃⌥⌘C toggles keep-awake from any app (Carbon hot key — sandbox-safe, no Accessibility permission); toggle with "Global Shortcut ⌃⌥⌘C"
+- Quiet notifications (provisional authorization, no prompt) when Cafeina turns off automatically — timer ended, or battery auto-off; toggle with "Notify When Turned Off Automatically"
 
 ### Changed
 - `scripts/build-dmg.sh` builds with `-destination 'generic/platform=macOS'` so the DMG always contains a universal (`arm64` + `x86_64`) app; the committed `dist/Cafeina.dmg` is rebuilt from 1.1

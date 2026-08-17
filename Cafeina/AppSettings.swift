@@ -26,4 +26,36 @@ enum AppSettings {
         get { UserDefaults.standard.bool(forKey: Key.allowDisplaySleep) }
         set { UserDefaults.standard.set(newValue, forKey: Key.allowDisplaySleep) }
     }
+
+    // MARK: - Timers, global shortcut, notifications
+
+    private enum TimerKey {
+        static let showTimeRemainingInMenuBar = "showTimeRemainingInMenuBar"
+        static let globalShortcutEnabled = "globalShortcutEnabled"
+        static let notificationsEnabled = "notificationsEnabled"
+    }
+
+    /// Show the remaining time of a timed session next to the menu-bar icon. Defaults to on.
+    static var showTimeRemainingInMenuBar: Bool {
+        get { bool(forKey: TimerKey.showTimeRemainingInMenuBar, default: true) }
+        set { UserDefaults.standard.set(newValue, forKey: TimerKey.showTimeRemainingInMenuBar) }
+    }
+
+    /// Register the system-wide keyboard shortcut that toggles keep-awake. Defaults to on.
+    static var globalShortcutEnabled: Bool {
+        get { bool(forKey: TimerKey.globalShortcutEnabled, default: true) }
+        set { UserDefaults.standard.set(newValue, forKey: TimerKey.globalShortcutEnabled) }
+    }
+
+    /// Post a quiet notification when keep-awake turns off on its own
+    /// (timer ended or battery auto-off). Defaults to on.
+    static var notificationsEnabled: Bool {
+        get { bool(forKey: TimerKey.notificationsEnabled, default: true) }
+        set { UserDefaults.standard.set(newValue, forKey: TimerKey.notificationsEnabled) }
+    }
+
+    /// Reads a Bool that should default to `defaultValue` when the key has never been written.
+    private static func bool(forKey key: String, default defaultValue: Bool) -> Bool {
+        UserDefaults.standard.object(forKey: key) as? Bool ?? defaultValue
+    }
 }
