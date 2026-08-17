@@ -17,7 +17,7 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 Download the latest DMG from this repository:
 
-[Download Cafeina.dmg](https://github.com/juandiab/Cafeina/raw/master/dist/Cafeina.dmg)
+[Download Cafeina.dmg](https://github.com/juandiab/Cafeina/raw/main/dist/Cafeina.dmg)
 
 ## Support
 
