@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!--
+    Cafeina — Candidate C: "Sunrise Cup"
+    A wide porcelain cup at dawn; instead of steam, an amber sun rises out of it. Coffee = morning = awake.
+    macOS Big Sur icon geometry: 824x824 tile at (100,100), corner radius 184.5 (22.37%).
+    Palette: dawn tile #2B160D → #8E4A2A, porcelain #FFF8EA → #E2CCA6, sun #FFE1A0 → #F0982F, coffee #4A2614.
+  -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2B160D"/>
+      <stop offset="0.45" stop-color="#4E2716"/>
+      <stop offset="1" stop-color="#8E4A2A"/>
+    </linearGradient>
+    <radialGradient id="dawn" cx="0.5" cy="0.44" r="0.55">
+      <stop offset="0" stop-color="#FFB25A" stop-opacity="0.55"/>
+      <stop offset="0.5" stop-color="#FF9F45" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#FF9F45" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tileRim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.3"/>
+      <stop offset="0.35" stop-color="#FFFFFF" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="tileClip">
+      <rect x="100" y="100" width="824" height="824" rx="184.5" ry="184.5"/>
+    </clipPath>
+
+    <radialGradient id="sun" cx="0.5" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#FFE9B0"/>
+      <stop offset="0.55" stop-color="#FDC565"/>
+      <stop offset="1" stop-color="#F0982F"/>
+    </radialGradient>
+    <linearGradient id="porcelain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF9EC"/>
+      <stop offset="0.7" stop-color="#F3E3C6"/>
+      <stop offset="1" stop-color="#DFC8A0"/>
+    </linearGradient>
+    <linearGradient id="porcelainSide" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="0.7" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#5A3418" stop-opacity="0.22"/>
+    </linearGradient>
+    <linearGradient id="handleG" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F3E3C6"/>
+      <stop offset="1" stop-color="#D9C096"/>
+    </linearGradient>
+    <linearGradient id="coffee" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3A1C0E"/>
+      <stop offset="1" stop-color="#6E3A1D"/>
+    </linearGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+    <filter id="rayGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+  <!-- ===== tile ===== -->
+  <rect x="100" y="100" width="824" height="824" rx="184.5" ry="184.5" fill="url(#tile)"/>
+  <rect x="100" y="100" width="824" height="824" rx="184.5" ry="184.5" fill="url(#dawn)"/>
+
+  <g clip-path="url(#tileClip)">
+    <!-- rays (glow + crisp) -->
+    <g stroke="#FFC46A" stroke-width="30" stroke-linecap="round" fill="none" transform="translate(512 470)">
+      <g opacity="0.55" filter="url(#rayGlow)">
+        <path d="M 0 -232 L 0 -290"/>
+        <path d="M -116 -201 L -145 -251"/>
+        <path d="M 116 -201 L 145 -251"/>
+        <path d="M -201 -116 L -251 -145"/>
+        <path d="M 201 -116 L 251 -145"/>
+      </g>
+      <path d="M 0 -232 L 0 -290"/>
+      <path d="M -116 -201 L -145 -251"/>
+      <path d="M 116 -201 L 145 -251"/>
+      <path d="M -201 -116 L -251 -145"/>
+      <path d="M 201 -116 L 251 -145"/>
+    </g>
+    <!-- sun -->
+    <circle cx="512" cy="470" r="176" fill="url(#sun)"/>
+
+    <!-- cup cast shadow -->
+    <ellipse cx="520" cy="806" rx="300" ry="46" fill="#120803" opacity="0.6" filter="url(#soft)"/>
+
+    <!-- handle -->
+    <path d="M 720 560 C 870 552, 870 706, 720 700" fill="none" stroke="#1A0D06" stroke-width="66" stroke-linecap="round" opacity="0.35" filter="url(#rayGlow)" transform="translate(6 10)"/>
+    <path d="M 720 560 C 870 552, 870 706, 720 700" fill="none" stroke="url(#handleG)" stroke-width="58" stroke-linecap="round"/>
+
+    <!-- cup body -->
+    <path id="cup" d="M 282 512 L 742 512 L 724 690 C 716 770, 690 800, 610 800 L 414 800 C 334 800, 308 770, 300 690 Z" fill="url(#porcelain)"/>
+    <path d="M 282 512 L 742 512 L 724 690 C 716 770, 690 800, 610 800 L 414 800 C 334 800, 308 770, 300 690 Z" fill="url(#porcelainSide)"/>
+    <!-- rim & coffee -->
+    <ellipse cx="512" cy="512" rx="230" ry="34" fill="url(#porcelain)"/>
+    <ellipse cx="512" cy="512" rx="200" ry="24" fill="url(#coffee)"/>
+  </g>
+
+  <!-- inner top light on the tile edge -->
+  <rect x="102" y="102" width="820" height="820" rx="182.5" ry="182.5" fill="none" stroke="url(#tileRim)" stroke-width="4"/>
+</svg>

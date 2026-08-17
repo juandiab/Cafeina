@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!--
+    Cafeina — Candidate A: "Crema Power"
+    A cup seen from directly above; the latte art in the crema is the ⏻ power glyph.
+    macOS Big Sur icon geometry: 824x824 tile at (100,100), corner radius 184.5 (22.37%).
+    Palette: espresso #3E2417 → #24140C, porcelain #FFF7E8 → #E7D3B0, coffee #7B4325 → #3B1E10,
+             crema-gold accent #FFE7B5 → #F2A93B.
+  -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4A2B1B"/>
+      <stop offset="0.55" stop-color="#341C11"/>
+      <stop offset="1" stop-color="#22120A"/>
+    </linearGradient>
+    <radialGradient id="tileLight" cx="0.5" cy="0.05" r="0.75">
+      <stop offset="0" stop-color="#FFE0B0" stop-opacity="0.22"/>
+      <stop offset="0.5" stop-color="#FFE0B0" stop-opacity="0.05"/>
+      <stop offset="1" stop-color="#FFE0B0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tileRim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="0.35" stop-color="#FFFFFF" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="tileClip">
+      <rect x="100" y="100" width="824" height="824" rx="184.5" ry="184.5"/>
+    </clipPath>
+
+    <!-- porcelain -->
+    <linearGradient id="porcelain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF9EC"/>
+      <stop offset="0.6" stop-color="#F6E7CB"/>
+      <stop offset="1" stop-color="#E3CDA6"/>
+    </linearGradient>
+    <radialGradient id="porcelainEdge" cx="0.5" cy="0.42" r="0.58">
+      <stop offset="0.82" stop-color="#7A5530" stop-opacity="0"/>
+      <stop offset="1" stop-color="#7A5530" stop-opacity="0.38"/>
+    </radialGradient>
+    <linearGradient id="handleG" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F6E7CB"/>
+      <stop offset="1" stop-color="#DCC49B"/>
+    </linearGradient>
+    <!-- coffee surface: darker toward the rim shadow at top -->
+    <radialGradient id="coffee" cx="0.5" cy="0.62" r="0.62">
+      <stop offset="0" stop-color="#7E4526"/>
+      <stop offset="0.55" stop-color="#5A2E18"/>
+      <stop offset="1" stop-color="#33190D"/>
+    </radialGradient>
+    <linearGradient id="rimShadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#160A05" stop-opacity="0.55"/>
+      <stop offset="0.35" stop-color="#160A05" stop-opacity="0"/>
+    </linearGradient>
+    <!-- crema-gold latte art -->
+    <linearGradient id="crema" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF0CC"/>
+      <stop offset="0.5" stop-color="#FBD68C"/>
+      <stop offset="1" stop-color="#F2A93B"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFB84D" stop-opacity="0.45"/>
+      <stop offset="0.6" stop-color="#FFB84D" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#FFB84D" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+    <filter id="softer" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+
+  <!-- ===== tile ===== -->
+  <rect x="100" y="100" width="824" height="824" rx="184.5" ry="184.5" fill="url(#tile)"/>
+  <rect x="100" y="100" width="824" height="824" rx="184.5" ry="184.5" fill="url(#tileLight)"/>
+
+  <g clip-path="url(#tileClip)">
+    <!-- cast shadow of the cup, kept inside the tile -->
+    <ellipse cx="510" cy="560" rx="340" ry="330" fill="#0E0603" opacity="0.55" filter="url(#soft)"/>
+
+    <!-- handle (behind the cup body) -->
+    <path d="M 728 388 C 916 356, 916 668, 728 636" fill="none" stroke="#1A0D06" stroke-width="66" stroke-linecap="round" opacity="0.35" filter="url(#softer)" transform="translate(6 10)"/>
+    <path d="M 728 388 C 916 356, 916 668, 728 636" fill="none" stroke="url(#handleG)" stroke-width="62" stroke-linecap="round"/>
+
+    <!-- cup body: porcelain ring -->
+    <circle cx="486" cy="512" r="312" fill="url(#porcelain)"/>
+    <circle cx="486" cy="512" r="312" fill="url(#porcelainEdge)"/>
+    <!-- coffee -->
+    <circle cx="486" cy="512" r="250" fill="url(#coffee)"/>
+    <circle cx="486" cy="512" r="250" fill="url(#rimShadow)"/>
+    <!-- warm glow under the glyph -->
+    <circle cx="486" cy="512" r="215" fill="url(#glow)"/>
+
+    <!-- latte-art power glyph -->
+    <g fill="none" stroke="url(#crema)" stroke-width="52" stroke-linecap="round">
+      <!-- arc: opening at the top (±33° from vertical) -->
+      <path d="M 567.7 386.2 A 150 150 0 1 1 404.3 386.2"/>
+      <!-- stem -->
+      <path d="M 486 322 L 486 486"/>
+    </g>
+  </g>
+
+  <!-- inner top light on the tile edge -->
+  <rect x="102" y="102" width="820" height="820" rx="182.5" ry="182.5" fill="none" stroke="url(#tileRim)" stroke-width="4"/>
+</svg>
