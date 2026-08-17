@@ -4,7 +4,7 @@ Cafeina is a native macOS menu bar app that keeps your Mac awake while enabled.
 
 **Version 1.2** · **Requires macOS 13.0 or later**
 
-See [CHANGELOG.md](CHANGELOG.md) for release notes.
+See [CHANGELOG.md](CHANGELOG.md) for release notes, [docs/RELEASING.md](docs/RELEASING.md) for the release process, and [docs/SHORTCUTS.md](docs/SHORTCUTS.md) for Shortcuts/Siri examples.
 
 ## Features
 
@@ -20,6 +20,11 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 - Optional Open at Login
 - Shortcuts & Siri support (App Intents): Keep Mac Awake, Turn Off, Toggle, Get Status — works with Focus-mode automations, Raycast, Stream Deck; see [docs/SHORTCUTS.md](docs/SHORTCUTS.md)
 - About, Privacy Policy, and Support links in the menu
+
+## Install
+
+- **Mac App Store:** *Cafeina – Keep Awake* (submitted for review; link will be added when live)
+- **Direct download:** see below (Homebrew cask coming later)
 
 ## Download
 
