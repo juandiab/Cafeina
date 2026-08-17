@@ -24,7 +24,7 @@ Download the latest DMG from this repository:
 ## Support
 
 - Email: [support@nexxus-tech.com](mailto:support@nexxus-tech.com)
-- Website: [www.nexxus-tech.com](https://www.nexxus-tech.com)
+- Website: [www.nexxus-tech.com/cafeina](https://www.nexxus-tech.com/cafeina)
 - Privacy: [www.nexxus-tech.com/cafeina/privacy](https://www.nexxus-tech.com/cafeina/privacy)
 
 ## Build

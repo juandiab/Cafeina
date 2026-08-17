@@ -15,6 +15,17 @@ All notable changes to Cafeina are documented in this file.
 - Added App Sandbox entitlement (`Cafeina/Cafeina.entitlements`, `com.apple.security.app-sandbox`) wired into Debug and Release for App Store submission
 - Fixed the Swift 6 concurrency warning in `PowerAssertionManager` by isolating it to the main actor (expiration timer now hops via `MainActor.assumeIsolated`); `AppDelegate` is explicitly `@MainActor`
 
+### Fixed
+- Relaunching Cafeina (Dock, Finder, Spotlight) now opens the About window instead of showing nothing
+- Control-click on the menu bar icon opens the menu, same as right-click; tooltip and first-launch hint updated to say so
+- Open at Login: when the login item requires approval, the menu item now opens System Settings › Login Items; if enabling/disabling fails, an alert explains why with a shortcut to Login Items
+- First-launch hint now activates the app so the alert appears in front
+- "Website" link (About window, README) points to https://www.nexxus-tech.com/cafeina
+- `Info.plist` declares `ITSAppUsesNonExemptEncryption=false` and reads its version from `MARKETING_VERSION` / `CURRENT_PROJECT_VERSION`
+- Added a privacy manifest (`PrivacyInfo.xcprivacy`: no tracking, no collected data, UserDefaults reason `CA92.1`), bundled in Resources
+- About window shows the build-setting-driven version (1.1 (2))
+- `docs/APP_STORE_AUDIT.md` gained a Status section listing what this branch fixes
+
 ## 1.1.0 — 2026-08-17
 
 ### Added

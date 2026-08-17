@@ -26,8 +26,15 @@ final class AboutWindowController: NSWindowController {
     }
 
     func show() {
+        guard let window else {
+            return
+        }
+        if !window.isVisible {
+            window.center()
+        }
         NSApp.activate(ignoringOtherApps: true)
-        window?.makeKeyAndOrderFront(nil)
+        window.makeKeyAndOrderFront(nil)
+        window.orderFrontRegardless()
     }
 }
 

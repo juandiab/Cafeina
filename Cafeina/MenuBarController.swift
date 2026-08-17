@@ -70,6 +70,10 @@ final class MenuBarController: NSObject {
     }
 
     private func tooltipText(isEnabled: Bool) -> String {
+        "\(statusTooltipText(isEnabled: isEnabled))\nClick to toggle. Right-click or Control-click opens the menu."
+    }
+
+    private func statusTooltipText(isEnabled: Bool) -> String {
         guard isEnabled else {
             return "Cafeina is off"
         }
@@ -100,7 +104,9 @@ final class MenuBarController: NSObject {
     }
 
     @objc private func handleStatusItemClick(_ sender: NSStatusBarButton) {
-        if NSApp.currentEvent?.type == .rightMouseUp {
+        let event = NSApp.currentEvent
+        let isControlClick = event?.type == .leftMouseUp && event?.modifierFlags.contains(.control) == true
+        if event?.type == .rightMouseUp || isControlClick {
             showContextMenu()
         } else {
             toggleCafeina()
@@ -345,9 +351,10 @@ final class MenuBarController: NSObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
             let alert = NSAlert()
             alert.messageText = "Cafeina is in your menu bar"
-            alert.informativeText = "Look for the cup icon near the clock. Left-click toggles keep-awake; right-click opens timers, About, Privacy, and Support."
+            alert.informativeText = "Look for the cup icon near the clock. Left-click toggles keep-awake. Right-click or Control-click opens the menu with timers, About, Privacy, and Support."
             alert.alertStyle = .informational
             alert.addButton(withTitle: "Got It")
+            NSApp.activate(ignoringOtherApps: true)
             alert.runModal()
         }
     }
