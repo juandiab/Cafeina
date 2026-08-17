@@ -16,6 +16,8 @@
 		7F3B06F79594E44AB7A20039 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2AE68866378572A4D85FE /* AboutWindowController.swift */; };
 		A7DD152460644A5498E86BD4 /* PowerSourceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13E3F27734450BA9326856 /* PowerSourceMonitor.swift */; };
 		5B0001E37D5946C4B1B83A33 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D379825A0EC4EF1A070A7F7 /* AppSettings.swift */; };
+		B81FA9C1EC97481B9034D2DC /* AppServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C63DA952F2C42BDAD8182E2 /* AppServices.swift */; };
+		C07A19B0C4EC43A795CB675B /* CafeinaIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583371F1DD3947BD8092C51C /* CafeinaIntents.swift */; };
 		D754476FF66444B0A256F07F /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8FD2182F04140DAAC0985EB /* IOKit.framework */; };
 		8F38E48A3DD140938CB1E0C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */; };
 		3C7E1A5B9D2F4E8AB6C0D1E2 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E4A9C2D7B1F34868A5D6E7F0 /* PrivacyInfo.xcprivacy */; };
@@ -32,6 +34,8 @@
 		49B2AE68866378572A4D85FE /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		8A13E3F27734450BA9326856 /* PowerSourceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerSourceMonitor.swift; sourceTree = "<group>"; };
 		1D379825A0EC4EF1A070A7F7 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		8C63DA952F2C42BDAD8182E2 /* AppServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppServices.swift; sourceTree = "<group>"; };
+		583371F1DD3947BD8092C51C /* CafeinaIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeinaIntents.swift; sourceTree = "<group>"; };
 		43A64ACCD0ED47BD8470826A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55F7725752BD478EBA232ED4 /* Cafeina.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Cafeina.entitlements; sourceTree = "<group>"; };
 		9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -72,6 +76,8 @@
 				49B2AE68866378572A4D85FE /* AboutWindowController.swift */,
 				8A13E3F27734450BA9326856 /* PowerSourceMonitor.swift */,
 				1D379825A0EC4EF1A070A7F7 /* AppSettings.swift */,
+				8C63DA952F2C42BDAD8182E2 /* AppServices.swift */,
+				583371F1DD3947BD8092C51C /* CafeinaIntents.swift */,
 				43A64ACCD0ED47BD8470826A /* Info.plist */,
 				55F7725752BD478EBA232ED4 /* Cafeina.entitlements */,
 				9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */,
@@ -200,6 +206,8 @@
 				7F3B06F79594E44AB7A20039 /* AboutWindowController.swift in Sources */,
 				A7DD152460644A5498E86BD4 /* PowerSourceMonitor.swift in Sources */,
 				5B0001E37D5946C4B1B83A33 /* AppSettings.swift in Sources */,
+				B81FA9C1EC97481B9034D2DC /* AppServices.swift in Sources */,
+				C07A19B0C4EC43A795CB675B /* CafeinaIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

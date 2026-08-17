@@ -13,6 +13,7 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 - Battery-aware auto-off: turn off when on battery, or below 20%
 - Allow Display to Sleep mode: keeps the Mac awake but lets the screen turn off
 - Optional Open at Login
+- Shortcuts & Siri support (App Intents): Keep Mac Awake, Turn Off, Toggle, Get Status — works with Focus-mode automations, Raycast, Stream Deck; see [docs/SHORTCUTS.md](docs/SHORTCUTS.md)
 - About, Privacy Policy, and Support links in the menu
 
 ## Download
