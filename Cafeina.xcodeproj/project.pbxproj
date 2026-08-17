@@ -16,6 +16,9 @@
 		7F3B06F79594E44AB7A20039 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2AE68866378572A4D85FE /* AboutWindowController.swift */; };
 		A7DD152460644A5498E86BD4 /* PowerSourceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13E3F27734450BA9326856 /* PowerSourceMonitor.swift */; };
 		5B0001E37D5946C4B1B83A33 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D379825A0EC4EF1A070A7F7 /* AppSettings.swift */; };
+		B663AF8738FEE24F609A8D1E /* HotKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CBDCFD5C5D1CFBF531098A /* HotKeyManager.swift */; };
+		0540E6B397CF6C917954A9F7 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E952DD138B0E8414794FA7B /* NotificationManager.swift */; };
+		3938C5762F00D205FB00E35C /* UntilTimePanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABF4A621266A2F5DECEC85F /* UntilTimePanelController.swift */; };
 		D754476FF66444B0A256F07F /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8FD2182F04140DAAC0985EB /* IOKit.framework */; };
 		8F38E48A3DD140938CB1E0C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -31,6 +34,9 @@
 		49B2AE68866378572A4D85FE /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		8A13E3F27734450BA9326856 /* PowerSourceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerSourceMonitor.swift; sourceTree = "<group>"; };
 		1D379825A0EC4EF1A070A7F7 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		61CBDCFD5C5D1CFBF531098A /* HotKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyManager.swift; sourceTree = "<group>"; };
+		5E952DD138B0E8414794FA7B /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		0ABF4A621266A2F5DECEC85F /* UntilTimePanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UntilTimePanelController.swift; sourceTree = "<group>"; };
 		43A64ACCD0ED47BD8470826A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55F7725752BD478EBA232ED4 /* Cafeina.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Cafeina.entitlements; sourceTree = "<group>"; };
 		9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -70,6 +76,9 @@
 				49B2AE68866378572A4D85FE /* AboutWindowController.swift */,
 				8A13E3F27734450BA9326856 /* PowerSourceMonitor.swift */,
 				1D379825A0EC4EF1A070A7F7 /* AppSettings.swift */,
+				61CBDCFD5C5D1CFBF531098A /* HotKeyManager.swift */,
+				5E952DD138B0E8414794FA7B /* NotificationManager.swift */,
+				0ABF4A621266A2F5DECEC85F /* UntilTimePanelController.swift */,
 				43A64ACCD0ED47BD8470826A /* Info.plist */,
 				55F7725752BD478EBA232ED4 /* Cafeina.entitlements */,
 				9B6D58A0F70547FDB6B48C25 /* Assets.xcassets */,
@@ -196,6 +205,9 @@
 				7F3B06F79594E44AB7A20039 /* AboutWindowController.swift in Sources */,
 				A7DD152460644A5498E86BD4 /* PowerSourceMonitor.swift in Sources */,
 				5B0001E37D5946C4B1B83A33 /* AppSettings.swift in Sources */,
+				B663AF8738FEE24F609A8D1E /* HotKeyManager.swift in Sources */,
+				0540E6B397CF6C917954A9F7 /* NotificationManager.swift in Sources */,
+				3938C5762F00D205FB00E35C /* UntilTimePanelController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

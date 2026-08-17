@@ -4,6 +4,16 @@ import IOKit.pwr_mgt
 enum KeepAwakeDuration: Equatable {
     case indefinite
     case minutes(Int)
+    /// Keep awake until a specific moment (the "Until a Time…" mode).
+    case until(Date)
+
+    /// Shared short-time formatter ("h:mm a" in the user's locale) for `.until` text.
+    static let shortTimeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        return formatter
+    }()
 
     var menuTitle: String {
         switch self {
@@ -16,6 +26,8 @@ enum KeepAwakeDuration: Equatable {
             return hours == 1 ? "1 Hour" : "\(hours) Hours"
         case .minutes(let minutes):
             return "\(minutes) Minutes"
+        case .until:
+            return "Until a Time…"
         }
     }
 
@@ -30,6 +42,8 @@ enum KeepAwakeDuration: Equatable {
             return hours == 1 ? "for 1 hour" : "for \(hours) hours"
         case .minutes(let minutes):
             return "for \(minutes) min"
+        case .until(let date):
+            return "until \(Self.shortTimeFormatter.string(from: date))"
         }
     }
 }
@@ -44,6 +58,10 @@ final class PowerAssertionManager {
     private(set) var expiresAt: Date?
 
     var onStateChange: (() -> Void)?
+
+    /// Called (after `onStateChange`) when a timed session ends on its own,
+    /// as opposed to an explicit `disable()`.
+    var onExpired: (() -> Void)?
 
     var isEnabled: Bool {
         idleSleepAssertionID != 0 || displaySleepAssertionID != 0
@@ -61,6 +79,12 @@ final class PowerAssertionManager {
     }
 
     func enable(for duration: KeepAwakeDuration) {
+        // A moment that has already passed leaves nothing to keep awake for: end up off.
+        if case .until(let date) = duration, date <= Date() {
+            disable()
+            return
+        }
+
         disable(notify: false)
         createAssertions()
 
@@ -77,19 +101,26 @@ final class PowerAssertionManager {
         case .indefinite:
             expiresAt = nil
         case .minutes(let minutes):
-            let expiration = Date().addingTimeInterval(TimeInterval(minutes * 60))
-            expiresAt = expiration
-            let timer = Timer(fire: expiration, interval: 0, repeats: false) { [weak self] _ in
-                // The timer is scheduled on the main run loop, so it always fires on the main thread.
-                MainActor.assumeIsolated {
-                    self?.disable()
-                }
-            }
-            RunLoop.main.add(timer, forMode: .common)
-            expirationTimer = timer
+            scheduleExpiration(at: Date().addingTimeInterval(TimeInterval(minutes * 60)))
+        case .until(let date):
+            scheduleExpiration(at: date)
         }
 
         onStateChange?()
+    }
+
+    /// Records `expiration` and arms the timer that turns keep-awake off at that moment.
+    private func scheduleExpiration(at expiration: Date) {
+        expiresAt = expiration
+        let timer = Timer(fire: expiration, interval: 0, repeats: false) { [weak self] _ in
+            // The timer is scheduled on the main run loop, so it always fires on the main thread.
+            MainActor.assumeIsolated {
+                self?.disable()
+                self?.onExpired?()
+            }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        expirationTimer = timer
     }
 
     func disable() {

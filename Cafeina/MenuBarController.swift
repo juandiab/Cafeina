@@ -6,6 +6,11 @@ final class MenuBarController: NSObject {
     private let powerAssertionManager: PowerAssertionManager
     private let loginItemManager: LoginItemManager
     private let powerSourceMonitor: PowerSourceMonitor
+    private let hotKeyManager = HotKeyManager()
+    private let notificationManager = NotificationManager()
+
+    /// Refreshes the menu-bar countdown while a timed session is active; nil otherwise.
+    private var countdownTimer: Timer?
 
     /// Whether the battery auto-off condition held at the last evaluation.
     /// Keep-awake is only turned off when the condition newly becomes true, so an
@@ -41,6 +46,7 @@ final class MenuBarController: NSObject {
         }
 
         configureStatusItem()
+        configureHotKeyAndNotifications()
         updateStatusItem()
         evaluateBatteryAutoOff()
         showFirstLaunchHintIfNeeded()
@@ -67,6 +73,7 @@ final class MenuBarController: NSObject {
         button.imagePosition = .imageOnly
         button.contentTintColor = nil
         button.toolTip = tooltipText(isEnabled: isEnabled)
+        updateCountdown()
     }
 
     private func tooltipText(isEnabled: Bool) -> String {
@@ -161,6 +168,7 @@ final class MenuBarController: NSObject {
             return
         }
         powerAssertionManager.disable()
+        notificationManager.notifyTurnedOff(reason: batteryAutoOffReason())
     }
 
     private func batteryAutoOffConditionHolds() -> Bool {
@@ -220,6 +228,7 @@ final class MenuBarController: NSObject {
             item.state = (isEnabled && powerAssertionManager.activeDuration == option) ? .on : .off
             keepAwakeMenu.addItem(item)
         }
+        addUntilTimeItem(to: keepAwakeMenu)
 
         let keepAwakeItem = NSMenuItem(title: "Keep Awake", action: nil, keyEquivalent: "")
         keepAwakeItem.submenu = keepAwakeMenu
@@ -234,6 +243,7 @@ final class MenuBarController: NSObject {
         menu.addItem(turnOffItem)
 
         menu.addItem(makeAllowDisplaySleepMenuItem())
+        addPreferenceItems(to: menu)
         menu.addItem(makeBatteryMenuItem())
 
         menu.addItem(.separator())
@@ -350,5 +360,161 @@ final class MenuBarController: NSObject {
             alert.addButton(withTitle: "Got It")
             alert.runModal()
         }
+    }
+
+    // MARK: - Until a Time…
+
+    /// Appends the "Until a Time…" entry to the Keep Awake submenu.
+    private func addUntilTimeItem(to keepAwakeMenu: NSMenu) {
+        keepAwakeMenu.addItem(.separator())
+
+        let item = NSMenuItem(
+            title: "Until a Time…",
+            action: #selector(showUntilTimePanel),
+            keyEquivalent: ""
+        )
+        if case .until = powerAssertionManager.activeDuration, powerAssertionManager.isEnabled {
+            item.state = .on
+        } else {
+            item.state = .off
+        }
+        keepAwakeMenu.addItem(item)
+    }
+
+    @objc private func showUntilTimePanel() {
+        UntilTimePanelController.shared.show { [weak self] date in
+            self?.powerAssertionManager.enable(for: .until(date))
+        }
+    }
+
+    // MARK: - Preferences (countdown, global shortcut, notifications)
+
+    /// Appends the checkbox items that follow "Allow Display to Sleep".
+    private func addPreferenceItems(to menu: NSMenu) {
+        let countdownItem = NSMenuItem(
+            title: "Show Time Remaining in Menu Bar",
+            action: #selector(toggleShowTimeRemaining),
+            keyEquivalent: ""
+        )
+        countdownItem.state = AppSettings.showTimeRemainingInMenuBar ? .on : .off
+        countdownItem.toolTip = "Shows a countdown next to the cup icon during timed sessions."
+        menu.addItem(countdownItem)
+
+        let shortcutItem = NSMenuItem(
+            title: "Global Shortcut \(HotKeyManager.shortcutDescription)",
+            action: #selector(toggleGlobalShortcut),
+            keyEquivalent: ""
+        )
+        if AppSettings.globalShortcutEnabled {
+            // `.mixed` flags an enabled setting whose registration failed (e.g. another app owns the keys).
+            shortcutItem.state = hotKeyManager.isRegistered ? .on : .mixed
+            shortcutItem.toolTip = hotKeyManager.isRegistered
+                ? "Toggles keep-awake from any app."
+                : "Could not register the shortcut; another app may already be using it."
+        } else {
+            shortcutItem.state = .off
+            shortcutItem.toolTip = "Toggles keep-awake from any app."
+        }
+        menu.addItem(shortcutItem)
+
+        let notificationsItem = NSMenuItem(
+            title: "Notify When Turned Off Automatically",
+            action: #selector(toggleNotifications),
+            keyEquivalent: ""
+        )
+        notificationsItem.state = AppSettings.notificationsEnabled ? .on : .off
+        notificationsItem.toolTip = "Posts a quiet notification when a timer ends or battery auto-off turns Cafeina off."
+        menu.addItem(notificationsItem)
+    }
+
+    @objc private func toggleShowTimeRemaining() {
+        AppSettings.showTimeRemainingInMenuBar.toggle()
+        updateCountdown()
+    }
+
+    @objc private func toggleGlobalShortcut() {
+        AppSettings.globalShortcutEnabled.toggle()
+        applyGlobalShortcutSetting()
+    }
+
+    @objc private func toggleNotifications() {
+        AppSettings.notificationsEnabled.toggle()
+    }
+
+    private func configureHotKeyAndNotifications() {
+        hotKeyManager.onHotKey = { [weak self] in
+            self?.toggleCafeina()
+        }
+        applyGlobalShortcutSetting()
+
+        powerAssertionManager.onExpired = { [weak self] in
+            self?.notificationManager.notifyTurnedOff(reason: .timerExpired)
+        }
+    }
+
+    private func applyGlobalShortcutSetting() {
+        if AppSettings.globalShortcutEnabled {
+            hotKeyManager.register()
+        } else {
+            hotKeyManager.unregister()
+        }
+    }
+
+    /// Mirrors the precedence in `batteryAutoOffConditionHolds()` to describe why auto-off fired.
+    private func batteryAutoOffReason() -> NotificationManager.Reason {
+        AppSettings.disableWhenOnBattery
+            ? .onBattery
+            : .lowBattery(thresholdPercent: AppSettings.lowBatteryThresholdPercent)
+    }
+
+    // MARK: - Menu-bar countdown
+
+    /// Shows the remaining time next to the icon during timed sessions (when enabled)
+    /// and keeps the refresh timer running only while there is something to count down.
+    private func updateCountdown() {
+        guard let button = statusItem.button else {
+            return
+        }
+
+        if AppSettings.showTimeRemainingInMenuBar, let expiresAt = powerAssertionManager.expiresAt {
+            button.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium)
+            button.title = Self.countdownText(secondsRemaining: expiresAt.timeIntervalSinceNow)
+            button.imagePosition = .imageLeading
+            startCountdownTimerIfNeeded()
+        } else {
+            button.title = ""
+            button.imagePosition = .imageOnly
+            stopCountdownTimer()
+        }
+    }
+
+    /// Countdown label for the menu bar: "42m", "1h 05m", "<1m". Minutes are rounded up.
+    nonisolated static func countdownText(secondsRemaining: TimeInterval) -> String {
+        guard secondsRemaining >= 60 else {
+            return "<1m"
+        }
+        let totalMinutes = Int((secondsRemaining / 60).rounded(.up))
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        return hours > 0 ? String(format: "%dh %02dm", hours, minutes) : "\(minutes)m"
+    }
+
+    private func startCountdownTimerIfNeeded() {
+        guard countdownTimer == nil else {
+            return
+        }
+        let timer = Timer(timeInterval: 30, repeats: true) { [weak self] _ in
+            // Scheduled on the main run loop, so it always fires on the main thread.
+            MainActor.assumeIsolated {
+                self?.updateCountdown()
+            }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        countdownTimer = timer
+    }
+
+    private func stopCountdownTimer() {
+        countdownTimer?.invalidate()
+        countdownTimer = nil
     }
 }
