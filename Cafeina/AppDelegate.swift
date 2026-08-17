@@ -5,6 +5,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let powerAssertionManager = PowerAssertionManager()
     let loginItemManager = LoginItemManager()
     let powerSourceMonitor = PowerSourceMonitor()
+    let appTriggerMonitor = AppTriggerMonitor()
+    let displayMonitor = DisplayMonitor()
     private var menuBarController: MenuBarController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -12,7 +14,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         menuBarController = MenuBarController(
             powerAssertionManager: powerAssertionManager,
             loginItemManager: loginItemManager,
-            powerSourceMonitor: powerSourceMonitor
+            powerSourceMonitor: powerSourceMonitor,
+            appTriggerMonitor: appTriggerMonitor,
+            displayMonitor: displayMonitor
         )
     }
 

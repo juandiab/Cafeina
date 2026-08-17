@@ -13,6 +13,8 @@ All notable changes to Cafeina are documented in this file.
 - Menu-bar countdown: the remaining time of a timed session ("42m", "1h 05m") is shown next to the cup icon; toggle with "Show Time Remaining in Menu Bar"
 - Global keyboard shortcut ⌃⌥⌘C toggles keep-awake from any app (Carbon hot key — sandbox-safe, no Accessibility permission); toggle with "Global Shortcut ⌃⌥⌘C"
 - Quiet notifications (provisional authorization, no prompt) when Cafeina turns off automatically — timer ended, or battery auto-off; toggle with "Notify When Turned Off Automatically"
+- Keep Awake While Running — pick apps (Zoom, Keynote, exports…) that keep the Mac awake while they run; the submenu lists your chosen apps and the apps running right now, plus "Choose App…"; the status line shows why ("Cafeina: On (Zoom is running)")
+- Keep Awake While Presenting — turns on while an external, mirrored, or AirPlay display is connected
 
 ### Changed
 - `scripts/build-dmg.sh` builds with `-destination 'generic/platform=macOS'` so the DMG always contains a universal (`arm64` + `x86_64`) app; the committed `dist/Cafeina.dmg` is rebuilt from 1.1

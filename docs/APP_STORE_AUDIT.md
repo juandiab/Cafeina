@@ -50,3 +50,6 @@ Fixed on `agent/polish` (verified: Release universal build, zero warnings; bundl
 - P3 Build — Info.plist versions are `$(MARKETING_VERSION)` / `$(CURRENT_PROJECT_VERSION)`.
 
 Handled elsewhere: P0 Sandbox, P3 template icon, P3 DMG rebuild (`main` / other branches). Remaining (ASC-side, no code): P0/P2 metadata wording and privacy-URL prerender.
+
+## Reviewer notes addendum
+- The menu also has "Keep Awake While Running" (submenu: chosen apps, currently running apps, "Choose App…" via NSOpenPanel — all sandbox-safe: `NSWorkspace.runningApplications`, launch/terminate notifications, powerbox) and a "Keep Awake While Presenting" checkbox (external/mirrored/AirPlay display); both turn keep-awake on automatically and off again when the app quits / display disconnects, and are opt-in.
