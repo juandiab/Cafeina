@@ -49,6 +49,17 @@ final class PowerAssertionManager {
         idleSleepAssertionID != 0 || displaySleepAssertionID != 0
     }
 
+    /// When true, only system idle sleep is prevented and the display may sleep.
+    /// Toggling while keep-awake is active re-creates the assertions in place,
+    /// preserving the current duration and expiry.
+    var allowDisplaySleep: Bool {
+        get { AppSettings.allowDisplaySleep }
+        set {
+            AppSettings.allowDisplaySleep = newValue
+            recreateAssertionsIfEnabled()
+        }
+    }
+
     func enable(for duration: KeepAwakeDuration) {
         disable(notify: false)
         createAssertions()
@@ -98,26 +109,33 @@ final class PowerAssertionManager {
     }
 
     private func createAssertions() {
-        let idleResult = IOPMAssertionCreateWithName(
-            kIOPMAssertionTypeNoIdleSleep as CFString,
+        idleSleepAssertionID = createAssertion(type: kIOPMAssertionTypeNoIdleSleep)
+        displaySleepAssertionID = allowDisplaySleep
+            ? 0
+            : createAssertion(type: kIOPMAssertionTypeNoDisplaySleep)
+    }
+
+    private func createAssertion(type: String) -> IOPMAssertionID {
+        var assertionID: IOPMAssertionID = 0
+        let result = IOPMAssertionCreateWithName(
+            type as CFString,
             IOPMAssertionLevel(kIOPMAssertionLevelOn),
             reason,
-            &idleSleepAssertionID
+            &assertionID
         )
+        return result == kIOReturnSuccess ? assertionID : 0
+    }
 
-        if idleResult != kIOReturnSuccess {
-            idleSleepAssertionID = 0
+    private func recreateAssertionsIfEnabled() {
+        guard isEnabled else {
+            return
         }
 
-        let displayResult = IOPMAssertionCreateWithName(
-            kIOPMAssertionTypeNoDisplaySleep as CFString,
-            IOPMAssertionLevel(kIOPMAssertionLevelOn),
-            reason,
-            &displaySleepAssertionID
-        )
+        releaseAssertions()
+        createAssertions()
 
-        if displayResult != kIOReturnSuccess {
-            displaySleepAssertionID = 0
+        if !isEnabled {
+            disable()
         }
     }
 

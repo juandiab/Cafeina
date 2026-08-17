@@ -4,6 +4,11 @@ All notable changes to Cafeina are documented in this file.
 
 ## Unreleased
 
+### Added
+- Template menu-bar icon that adapts to light/dark menu bars and tinting, with distinct on (filled cup) and off (outlined cup) states
+- Battery-aware auto-off options in a new Battery submenu: "Turn Off When on Battery" and "Turn Off Below 20%" (disabled on Macs without a battery)
+- "Allow Display to Sleep" mode that keeps the Mac awake while letting the screen turn off
+
 ### Changed
 - `scripts/build-dmg.sh` builds with `-destination 'generic/platform=macOS'` so the DMG always contains a universal (`arm64` + `x86_64`) app; the committed `dist/Cafeina.dmg` is rebuilt from 1.1
 - The script no longer replaces Xcode's signature with an ad-hoc one; it keeps the automatic-signing (Apple Development) signature by default and supports optional Developer ID re-signing (`CODESIGN_IDENTITY`) and notarization + stapling (`NOTARY_PROFILE`), printing a summary (size, archs, identity, `spctl` result)
