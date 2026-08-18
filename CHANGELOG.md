@@ -2,6 +2,13 @@
 
 All notable changes to Cafeina are documented in this file.
 
+## 1.2.1 — 2026-08-17
+
+### Changed
+- Marketing version **1.2.1** (build **4**)
+- Rebuilt universal `dist/Cafeina.dmg` for direct download
+- README download link now points at the GitHub Releases asset (`…/releases/latest/download/Cafeina.dmg`)
+
 ## 1.2.0 — 2026-08-17
 
 ### Added

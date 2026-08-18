@@ -2,7 +2,7 @@
 
 Cafeina is a native macOS menu bar app that keeps your Mac awake while enabled.
 
-**Version 1.2** · **Requires macOS 13.0 or later**
+**Version 1.2.1** · **Requires macOS 13.0 or later**
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes, [docs/RELEASING.md](docs/RELEASING.md) for the release process, and [docs/SHORTCUTS.md](docs/SHORTCUTS.md) for Shortcuts/Siri examples.
 
@@ -28,9 +28,11 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes, [docs/RELEASING.md](docs/REL
 
 ## Download
 
-Download the latest DMG from this repository:
+Download the latest DMG from the [latest GitHub Release](https://github.com/juandiab/Cafeina/releases/latest):
 
-[Download Cafeina.dmg](https://github.com/juandiab/Cafeina/raw/main/dist/Cafeina.dmg)
+[Download Cafeina.dmg](https://github.com/juandiab/Cafeina/releases/latest/download/Cafeina.dmg)
+
+The same file is also kept in-repo at [`dist/Cafeina.dmg`](https://github.com/juandiab/Cafeina/raw/main/dist/Cafeina.dmg).
 
 ## Support
 
